@@ -43,7 +43,6 @@ public class ParkingSpotController {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body("Conflict: Parking Spot already registered for this apartment/block!");
         }
-        // Isolar as resposabilidades em um custom validator (pesquisar melhor)
         var parkingSpotModel = new ParkingSpotModel();
         BeanUtils.copyProperties(parkingSpotDto, parkingSpotModel);
         parkingSpotModel.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")));
@@ -51,7 +50,8 @@ public class ParkingSpotController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ParkingSpotModel>> getAllParkingSpots(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+    public ResponseEntity<Page<ParkingSpotModel>> getAllParkingSpots(
+            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
         return ResponseEntity.status(HttpStatus.OK).body(parkingSpotService.findAll(pageable));
     }
 
